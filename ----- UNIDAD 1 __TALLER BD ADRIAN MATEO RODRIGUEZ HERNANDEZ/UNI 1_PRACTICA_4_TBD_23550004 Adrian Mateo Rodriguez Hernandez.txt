@@ -1,0 +1,110 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database tutorial;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use tutorial;
+Database changed
+mysql> create table cliente( id_cliente int not null key auto_increment, nombre varchar(50) not null);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table factura (id_factura int not null auto_increment primarykey,id_cliente int not null,fecha date not null,foreign key (id_cliente) references cliente(id_cliente));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into cliente(nombre) value("perez");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from cliente;
++------------+--------+
+| id_cliente | nombre |
++------------+--------+
+|          1 | perez  |
++------------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into factura(id_cliente, fecha) value(1,"2026-10-10");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into cliente(nombre) value("pedro");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from cliente where id_cliente=2;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show create table factura;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                         |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `id_factura` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int NOT NULL,
+  `fecha` date NOT NULL,
+  PRIMARY KEY (`id_factura`),
+  KEY `id_cliente` (`id_cliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table factura drop foreign key factura_ibfk_1;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table factura add constraint foreign key(id_cliente)referencescliente(id_cliente)on update cascadeon delete cascade;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cascadeon delete cascade' at line 1
+mysql> alter table factura
+    ->                                          -> add constraint foreign key(id_cliente)
+    ->                                          -> references cliente(id_cliente)
+    ->                                          -> on update cascade
+    ->                                          -> on delete cascade;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> add constraint foreign key(id_cliente)
+                                      ' at line 2
+mysql> ALTER TABLE factura
+    -> ADD CONSTRAINT fk_factura_cliente
+    -> FOREIGN KEY (id_cliente)
+    -> REFERENCES cliente(id_cliente)
+    -> ON UPDATE CASCADE
+    -> ON DELETE CASCADE;
+Query OK, 1 row affected (0.07 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> select * from cliente;
++------------+--------+
+| id_cliente | nombre |
++------------+--------+
+|          1 | perez  |
++------------+--------+
+1 row in set (0.00 sec)
+
+mysql> update cliente set id_cliente = 10 where id_cliente = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from factura;
++------------+------------+------------+
+| id_factura | id_cliente | fecha      |
++------------+------------+------------+
+|          1 |         10 | 2026-10-10 |
++------------+------------+------------+
+1 row in set (0.00 sec)
+
+mysql> delete from cliente where id_cliente = 10;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from factura;
+Empty set (0.00 sec)
+
+mysql> select * from cliente;
+Empty set (0.00 sec)
+
+mysql>

@@ -1,0 +1,62 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila_nueva       |
+| sys                |
+| taller_bd_uni_1    |
+| taller_bd_uni_2    |
++--------------------+
+7 rows in set (0.01 sec)
+
+mysql> use taller_bd_uni_1
+Database changed
+mysql> create table persona( id_persona int not null auto_increment key, nombre varchar(50)not null, ap_paterno varchar(50)not null, ap_materno varchar(50) null, fecha_nac date not null);
+ERROR 1050 (42S01): Table 'persona' already exists
+mysql> show tables;
++---------------------------+
+| Tables_in_taller_bd_uni_1 |
++---------------------------+
+| persona                   |
+| vehiculo                  |
++---------------------------+
+2 rows in set (0.01 sec)
+
+mysql> desc persona;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| ap_paterno | varchar(50) | NO   |     | NULL    |                |
+| ap_materno | varchar(50) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from persona;
++------------+--------+------------+------------+------------+
+| id_persona | nombre | ap_paterno | ap_materno | fecha_nac  |
++------------+--------+------------+------------+------------+
+|          1 | juan   | gabriel    | jolote     | 1970-11-12 |
+|          2 | juan   | gabriel    | jolote     | 1970-11-12 |
+|          3 | pedro  | paramo     | NULL       | 1920-10-23 |
++------------+--------+------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
